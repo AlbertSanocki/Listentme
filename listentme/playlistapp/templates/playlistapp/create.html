@@ -1,0 +1,117 @@
+{% extends 'playlistapp/base.html' %}
+{% block title %}Listentme{% endblock %}
+{% block content%}
+<div class="create-page">
+    <form method="post" action="/create" class="form-group">
+        {% csrf_token %}
+        <div class="input-group">
+            <h2>PLAY LIST</h2>
+            <div class="preferences">
+                <div class="playlist-img">
+                    <label for="id_img" class="custom-file-upload">
+                        Choose photo
+                    </label>
+                    <div class="hidden">
+                    {{ new_playlist_data_form.img }}
+                    </div>
+                </div>
+                <div class="preferences-form">
+                    <div class="new-playlist-name">
+                        {{ new_playlist_data_form.name }}
+                    </div>
+                    <div class="new-playlist-description">
+                        {{ new_playlist_data_form.description }}
+                    </div>
+                    <div class="new-playlist-public">
+                        <p>Public</p>
+                        <label>
+                            {{ new_playlist_data_form.public }}
+                            <span></span>
+                            <i class="indicator"></i>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <h2>ARTISTS</h2>
+            <div class="artists">
+                {% if artist_formset %}
+                    {{ artist_formset.management_form }}
+                    <div = id="artists-list">
+                        {% for form in artist_formset %}
+                            <div class="artist-form">
+                                {{ form }}
+                            </div>
+                        {% endfor %}
+                        <div id="emty-form" class="hidden">
+                            <div class="user_box">
+                                {{ artist_formset.empty_form }}
+                                <span>Artist:</span>
+                            </div>
+                            <button id="delete-artist" type="button" name="query">-</button>
+                        </div>
+                        <div id="adding-form" class="add-form">
+                            <button id="add-artist" type="button" name="query">+</button>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="input-group-prepend">
+                <button type="submit" name="save">Create New</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    const totalNewForms = document.getElementById("id_form-TOTAL_FORMS")
+
+        document.addEventListener('click', (event)=>{
+            if (event.target.id == 'add-artist'){
+                add_new_form(event)
+                console.log(totalNewForms.value)
+            }
+            if (event.target.id == 'delete-artist'){
+                delete_new_form(event)
+                console.log(totalNewForms.value)
+            }
+            if (totalNewForms.value > 7) {
+                const formAdder = document.getElementById("adding-form")
+                formAdder.setAttribute("class", "hidden")
+            }
+            else {
+                const formAdder = document.getElementById("adding-form")
+                formAdder.setAttribute("class", "add-form")
+            }
+        })
+
+        function add_new_form(event) {
+            if (event) {
+                event.preventDefault()
+            }
+            const currentArtistForms = document.getElementsByClassName("artist-form")
+            const currentFromCount = currentArtistForms.length
+            const copyEmptyFormElement = document.getElementById("emty-form").cloneNode(true)
+            copyEmptyFormElement.setAttribute("class", "artist-form")
+            copyEmptyFormElement.setAttribute("id", `form-${currentFromCount}`)
+            const regex = new RegExp("__prefix__", "g")
+            copyEmptyFormElement.innerHTML = copyEmptyFormElement.innerHTML.replace(regex, currentFromCount)
+            totalNewForms.setAttribute('value', currentFromCount + 1)
+            const addArtist = document.getElementById("adding-form")
+            addArtist.before(copyEmptyFormElement)
+            const input = document.getElementById(`id_form-${currentFromCount}-artist`)
+            input.setAttribute("required", "required")
+        }
+
+        function delete_new_form(event) {
+            if (event) {
+                event.target.parentNode.remove()
+            }
+            const forms = document.getElementsByClassName("artist-form")
+            const regex = new RegExp("form-[0-9]", "g")
+            for(var i = 0; i < forms.length; i++) {
+                forms[i].innerHTML = forms[i].innerHTML.replace(regex, `form-${i}`);
+                totalNewForms.value = i + 1
+                forms[i].setAttribute("id", `form-${i}`);
+            }
+        }
+</script>
+{% endblock %}

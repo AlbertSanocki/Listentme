@@ -1,0 +1,55 @@
+{% extends 'playlistapp/base.html' %}
+{% block title %}Listentme{% endblock %}
+{% block content%}
+{% if current_user.display_name %}
+<div class="home-page">
+    <div class="profile">
+        <div class="container">
+            <div class="wrapper">
+                <a href="{{current_user.external_url}}" target="_blank">
+                    {% if current_user.image_url %}
+                    <img src={{current_user.image_url}}>
+                    {% else %}
+                        <i class="fa-regular fa-user"></i>
+                    {% endif %}
+                    <div class="name">{{current_user.display_name}}</div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Swiper -->
+    <div class="users-playlists">
+        {% if users_playlists %}
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    {% for playlist in users_playlists %}
+                        <div class="swiper-slide">
+                            <a href="{{playlist.external_url}}" target="_blank">
+                                <div class="playlist-name">
+                                    {{ playlist.name }}
+                                </div>
+                                <div class="playlist-box">
+                                    {% if playlist.image_url %}
+                                    <img src={{ playlist.image_url }}>
+                                    {% endif %}
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        {% else %}
+            <div class="empty-playlist-list">
+                <div class="text-type">
+                    <h2>You do not have any playlists yet...</h2>
+                </div>
+                <div class="button-apearing">
+                    <button type="button"><a href="/create">Create One!</a></button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

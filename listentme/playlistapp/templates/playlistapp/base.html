@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'playlistapp/style.css' %}">
+        <link rel="stylesheet" type='text/css' href="{% static 'playlistapp/css/all.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+        <title>{% block title %}Listentme{% endblock %}</title>
+    </head>
+    <body>
+
+        <!-- Sidenav -->
+
+        <div class="sidenav">
+            <div class="logo">
+                <h1>Listentme</h1>
+                <p>Powered by <i class="fa-brands fa-spotify"></i>Spotify</p>
+            </div>
+            <hr class="mt-0">
+            <div class="menu">
+                {% if current_user.display_name %}
+                <div class="account">
+                    <div class="profile-pic">
+                        {% if current_user.image_url %}
+                            <img src={{current_user.image_url}}>
+                        {% else %}
+                            <i class="fa-regular fa-user"></i>
+                        {% endif %}
+                    </div>
+                    <div class="profile-name">
+                        {{current_user.display_name}}
+                    </div>
+                </div>
+                {% endif %}
+                <ul>
+                    {% if current_user.display_name %}
+                        <li><a href="logout"><i class="fa-solid fa-arrow-right-to-bracket"></i>Logout</a></li>
+                    {% else %}
+                        <li><a href="spotify/get-auth-url"><i class="fa-solid fa-arrow-right-to-bracket"></i>Login</a></li>
+                    {% endif %}
+                    <li><a href="/"><i class="fa-solid fa-house"></i>Home</a></li>
+                    <li><a href="/create"><i class="fa-solid fa-circle-plus"></i>Create</a></li>
+                    <li><a href="/view"><i class="fa-solid fa-list"></i>View</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Content -->
+        {% if current_user.display_name %}
+            <div id="content">
+                {% block content %}
+                {% endblock %}
+            </div>
+        {% else %}
+            <div id="login-request">
+                <div class="request-info">
+                    <h2>We Need Spotify!</h2>
+                    <h4>Opps! You need to login into your Spotify Account!</h4>
+                    <p>To use Listentme, you must be authenticated and give us the necessary resources.</p>
+                    <a href="spotify/get-auth-url"><i class="fa-solid fa-arrow-right-to-bracket"></i>Login</a>
+                </div>
+            </div>
+        {% endif %}
+
+
+        <!-- Scripts -->
+
+        <!-- Swiper JS -->
+        <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+        <!-- Initialize Swiper -->
+        <script>
+            var swiper = new Swiper(".mySwiper", {
+                effect: "coverflow",
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: "auto",
+                coverflowEffect: {
+                    rotate: 20,
+                    stretch: 0,
+                    depth: 200,
+                    modifier: 1,
+                    slideShadows: false,
+                },
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                },
+            });
+        </script>
+
+        <script type="text/javascript">
+            var loginRequest = document.getElementById("login-request");
+            window.onmousemove = function(e){
+                var x = e.clientX/5,
+                    y = e.clientY/5;
+                loginRequest.style.backgroundPositionX = x + "px";
+                loginRequest.style.backgroundPositionY = y + "px";
+            }
+        </script>
+    </body>
+</html>
