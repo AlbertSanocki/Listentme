@@ -167,6 +167,84 @@ body {
     padding-right: 5px;
 }
 
+/* Loader */
+
+.loader-wrapper {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: none;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: rgb(0, 0, 0, 0.7);
+}
+
+.loader{
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.loader span{
+	width: 10px;
+	height: 80px;
+	margin: 0 3px;
+	border-radius: 50px;
+}
+
+.loader span:nth-child(5){
+	background: #1db954;
+	animation: anim 0.7s infinite;
+}
+
+.loader span:nth-child(4),span:nth-child(6){
+	background: #1db954;
+	animation: anim1 0.8s infinite;
+}
+
+.loader span:nth-child(3),span:nth-child(7){
+	background: #1db954;
+	animation: anim2 0.9s infinite;
+}
+
+.loader span:nth-child(2),span:nth-child(8){
+	background: #1db954;
+	animation: anim3 1s infinite;
+}
+
+.loader span:nth-child(1),span:nth-child(9){
+	background: #1db954;
+	animation: anim4 1.1s infinite;
+}
+
+@keyframes anim{
+	0%,100%{ height: 30px; }
+	50%{ height: 80px; }
+}
+
+@keyframes anim1{
+	0%,100%{ height: 30px; }
+	50%{ height: 100px; }
+}
+
+@keyframes anim2{
+	0%,100%{ height: 30px; }
+	50%{ height: 50px; }
+}
+
+@keyframes anim3{
+	0%,100%{ height: 30px; }
+	50%{ height: 90px; }
+}
+
+@keyframes anim4{
+	0%,100%{ height: 30px; }
+	50%{ height: 80px; }
+}
+
 /* Hope page */
 
 .profile {
@@ -541,7 +619,7 @@ body {
 }
 
 .new-playlist-public p {
-    color: #1db954;
+    color: #8e8e8e;
     padding-right: 5px;
 }
 

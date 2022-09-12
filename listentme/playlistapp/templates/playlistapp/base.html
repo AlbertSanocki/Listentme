@@ -64,8 +64,35 @@
             </div>
         {% endif %}
 
+        <!-- Loader -->
+        <div class="loader-wrapper">
+            <div class="loader">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
 
         <!-- Scripts -->
+
+        <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+
+        <script>
+            var loaderWrapper = $(".loader-wrapper")
+            $("form").submit(function(){
+                loaderWrapper.show();
+            })
+
+            $(window).on("load",function(){
+                loaderWrapper.hide();
+              });
+        </script>
 
         <!-- Swiper JS -->
         <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
