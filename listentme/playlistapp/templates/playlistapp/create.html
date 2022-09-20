@@ -63,6 +63,7 @@
 </div>
 <script>
     const totalNewForms = document.getElementById("id_form-TOTAL_FORMS")
+    const maxNewForms = 7
 
         document.addEventListener('click', (event)=>{
             if (event.target.id == 'add-artist'){
@@ -73,7 +74,7 @@
                 delete_new_form(event)
                 console.log(totalNewForms.value)
             }
-            if (totalNewForms.value > 7) {
+            if (totalNewForms.value > maxNewForms) {
                 const formAdder = document.getElementById("adding-form")
                 formAdder.setAttribute("class", "hidden")
             }
@@ -90,14 +91,21 @@
             const currentArtistForms = document.getElementsByClassName("artist-form")
             const currentFromCount = currentArtistForms.length
             const copyEmptyFormElement = document.getElementById("emty-form").cloneNode(true)
+
             copyEmptyFormElement.setAttribute("class", "artist-form")
             copyEmptyFormElement.setAttribute("id", `form-${currentFromCount}`)
+
             const regex = new RegExp("__prefix__", "g")
+
             copyEmptyFormElement.innerHTML = copyEmptyFormElement.innerHTML.replace(regex, currentFromCount)
             totalNewForms.setAttribute('value', currentFromCount + 1)
+
             const addArtist = document.getElementById("adding-form")
+
             addArtist.before(copyEmptyFormElement)
+
             const input = document.getElementById(`id_form-${currentFromCount}-artist`)
+            
             input.setAttribute("required", "required")
         }
 

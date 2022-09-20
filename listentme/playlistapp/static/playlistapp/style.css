@@ -305,7 +305,7 @@ body {
 .container .wrapper .name {
     color: #fff;
     font-size: 50px;
-    font-weight: 500;
+    font-weight: bold;
 }
 
 .users-playlists {

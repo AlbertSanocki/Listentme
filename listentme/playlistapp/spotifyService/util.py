@@ -7,7 +7,7 @@ from requests import post, put, get
 from .models import SpotifyToken
 
 
-BASE_URL = "https://api.spotify.com/v1/"
+BASE_URL = os.environ.get('BASE_URL')
 
 def get_user_tokens(session_id):
     """Load and return user token stored in database"""
@@ -42,12 +42,12 @@ def update_or_create_user_tokens(session_id, access_token, token_type, expires_i
 def is_spotify_authenticated(session_id):
     """Check if user is authenticated with Spotify"""
     tokens = get_user_tokens(session_id)
-    if tokens:
-        expiry = tokens.expires_in
-        if expiry <= timezone.now():
-            refresh_spotify_token(session_id)
-        return True
-    return False
+    if not tokens:
+        return False
+    if tokens.expires_in <= timezone.now():
+        refresh_spotify_token(session_id)
+    return True
+
 
 def refresh_spotify_token(session_id):
     """Refresh user token using Spotify API"""
@@ -102,6 +102,8 @@ def execute_spotify_api_request(
 def get_current_user(session_id):
     """Get data of user authenticated with Spotify"""
     endpoint='me/'
+    if not is_spotify_authenticated(session_id):
+        return None
     if is_spotify_authenticated(session_id):
         execute_spotify_api_request(session_id, endpoint, get_=True)
         response = execute_spotify_api_request(session_id, endpoint, get_=True)
@@ -119,7 +121,7 @@ def get_current_user(session_id):
                 'id': response.get('id'),
             }
         return current_user
-    return None
+
 
 def create_a_playlist(session_id, form_data):
     """Creating a playlist in authenticated Spotify user account

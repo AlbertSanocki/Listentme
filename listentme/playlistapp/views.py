@@ -22,7 +22,6 @@ def create(request):
     if request.method == 'POST':
         new_playlist_data_form = NewPlaylistDataForm(request.POST or None)
         artist_formset = ArtistFormSet(request.POST or None)
-        # print(request.POST)
         if all([new_playlist_data_form.is_valid(), artist_formset.is_valid()]):
             form_data = {
                 'name': new_playlist_data_form.cleaned_data['name'],
