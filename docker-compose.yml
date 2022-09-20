@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=changeme
+  web:
+    build:
+      context: .
+    command: >
+      sh -c "python manage.py wait_for_db &&
+             python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code/
+    environment:
+      - SECRET_KEY=django-insecure-5^6f2jp#0qnpc#$efp!f-mkh*#e2458=1x2cnmbeg33o(qnzt-
+      - DEBUG=1
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASSWORD=changeme
+      - ALLOWED_HOSTS=localhost
+      - ALLOWED_HOSTS=127.0.0.1
+      - CLIENT_ID=69362a3e8a2b49d5919a32b8d1bee499
+      - CLIENT_SECRET=a357da4e3d8041a19a90e013d0544a37
+      - REDIRECT_URI=http://127.0.0.1:8000/spotify/redirect
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    tty: true

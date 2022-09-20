@@ -91,21 +91,14 @@
             const currentArtistForms = document.getElementsByClassName("artist-form")
             const currentFromCount = currentArtistForms.length
             const copyEmptyFormElement = document.getElementById("emty-form").cloneNode(true)
-
             copyEmptyFormElement.setAttribute("class", "artist-form")
             copyEmptyFormElement.setAttribute("id", `form-${currentFromCount}`)
-
             const regex = new RegExp("__prefix__", "g")
-
             copyEmptyFormElement.innerHTML = copyEmptyFormElement.innerHTML.replace(regex, currentFromCount)
             totalNewForms.setAttribute('value', currentFromCount + 1)
-
             const addArtist = document.getElementById("adding-form")
-
             addArtist.before(copyEmptyFormElement)
-
             const input = document.getElementById(`id_form-${currentFromCount}-artist`)
-            
             input.setAttribute("required", "required")
         }
 

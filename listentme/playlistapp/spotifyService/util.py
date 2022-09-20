@@ -176,7 +176,6 @@ def get_artists(session_id, artists_form):
                 'id': response.get('id'),
                 'external_url': response.get('external_urls').get('spotify'),
             })
-        # może być problem jak ktoś wpisze twórce który nie istnieje w bazie Spotify
     return artists_data
 
 def get_artists_top_tracks_uris(session_id, artists_data):
