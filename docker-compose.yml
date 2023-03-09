@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   db:
-    image: postgres
+    image: postgres:13-alpine
     environment:
       - POSTGRES_DB=devdb
       - POSTGRES_USER=devuser
@@ -29,6 +29,7 @@ services:
       - CLIENT_ID=69362a3e8a2b49d5919a32b8d1bee499
       - CLIENT_SECRET=a357da4e3d8041a19a90e013d0544a37
       - REDIRECT_URI=http://127.0.0.1:8000/spotify/redirect
+      - BASE_URL=https://api.spotify.com/v1/
     ports:
       - "8000:8000"
     depends_on:

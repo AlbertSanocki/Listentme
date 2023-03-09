@@ -76,9 +76,7 @@ def delete_spotify_token(session_id):
 def execute_spotify_api_request(
         session_id,
         endpoint,
-        post_=False,
-        put_=False,
-        get_=False,
+        request_method=None,
         data=None,
         params=None
     ):
@@ -87,12 +85,13 @@ def execute_spotify_api_request(
     headers = {'Content-Type': 'application/json',
                'Authorization': 'Bearer ' + tokens.access_token}
 
-    if post_:
-        response = post(BASE_URL + endpoint, params=params, data=data, headers=headers)
-    if put_:
-        response = put(BASE_URL + endpoint, params=params, data=data, headers=headers)
-    if get_:
-        response = get(BASE_URL + endpoint, params=params, data=data, headers=headers)
+    match request_method:
+        case 'POST':
+            response = post(BASE_URL + endpoint, params=params, data=data, headers=headers)
+        case 'PUT':
+            response = put(BASE_URL + endpoint, params=params, data=data, headers=headers)
+        case 'GET':
+            response = get(BASE_URL + endpoint, params=params, data=data, headers=headers)
 
     try:
         return response.json()
@@ -105,8 +104,7 @@ def get_current_user(session_id):
     if not is_spotify_authenticated(session_id):
         return None
     if is_spotify_authenticated(session_id):
-        execute_spotify_api_request(session_id, endpoint, get_=True)
-        response = execute_spotify_api_request(session_id, endpoint, get_=True)
+        response = execute_spotify_api_request(session_id, endpoint, request_method='GET')
         try:
             current_user = {
                 'display_name': response.get('display_name'),
@@ -138,7 +136,7 @@ def create_a_playlist(session_id, form_data):
     new_playlist = execute_spotify_api_request(
         session_id,
         endpoint,
-        post_=True,
+        request_method='POST',
         data=new_playlist_data
     )
     new_palylist_id = new_playlist.get('id')
@@ -157,13 +155,8 @@ def get_artists(session_id, artists_form):
             'type': 'artist',
             'limit': 1,
         }
-        response = execute_spotify_api_request(
-            session_id,
-            endpoint,
-            get_=True,
-            params=params
-        ).get('artists').get('items')[0]
         try:
+            response = execute_spotify_api_request(session_id, endpoint, request_method='GET', params=params).get('artists').get('items')[0]
             artists_data.append({
                 'name': response.get('name'),
                 'id': response.get('id'),
@@ -171,11 +164,7 @@ def get_artists(session_id, artists_form):
                 'image_url': response.get('images')[0].get('url'),
             })
         except IndexError:
-            artists_data.append({
-                'name': response.get('name'),
-                'id': response.get('id'),
-                'external_url': response.get('external_urls').get('spotify'),
-            })
+            continue
     return artists_data
 
 def get_artists_top_tracks_uris(session_id, artists_data):
@@ -184,7 +173,7 @@ def get_artists_top_tracks_uris(session_id, artists_data):
     for artist in artists_data:
         artist_id = artist.get('id')
         endpoint = f'artists/{artist_id}/top-tracks?market=US'
-        response = execute_spotify_api_request(session_id, endpoint, get_=True).get('tracks')
+        response = execute_spotify_api_request(session_id, endpoint, request_method='GET').get('tracks')
         for track in response:
             tracks_uris_list.append(track.get('uri'))
     tracks_uris_str = ','.join(tracks_uris_list)
@@ -197,7 +186,7 @@ def add_tracks_to_playlist(session_id, playlist_id, tracks_uris_str):
     params = {
         'uris': tracks_uris_str
     }
-    execute_spotify_api_request(session_id, endpoint, post_=True, params=params)
+    execute_spotify_api_request(session_id, endpoint, request_method='POST', params=params)
 
 def get_current_users_playlists(session_id):
     """Load all playlists of the currently logged user"""
@@ -210,7 +199,7 @@ def get_current_users_playlists(session_id):
         response = execute_spotify_api_request(
             session_id,
             endpoint,
-            get_=True,
+            request_method='GET',
             params=params
         ).get('items')
         for playlist in response:
