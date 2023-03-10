@@ -18,18 +18,17 @@ services:
     volumes:
       - .:/code/
     environment:
-      - SECRET_KEY=django-insecure-5^6f2jp#0qnpc#$efp!f-mkh*#e2458=1x2cnmbeg33o(qnzt-
-      - DEBUG=1
+      - DEBUG=${DEBUG}
       - DB_HOST=db
-      - DB_NAME=devdb
-      - DB_USER=devuser
-      - DB_PASSWORD=changeme
-      - ALLOWED_HOSTS=localhost
-      - ALLOWED_HOSTS=127.0.0.1
-      - CLIENT_ID=69362a3e8a2b49d5919a32b8d1bee499
-      - CLIENT_SECRET=a357da4e3d8041a19a90e013d0544a37
-      - REDIRECT_URI=http://127.0.0.1:8000/spotify/redirect
-      - BASE_URL=https://api.spotify.com/v1/
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      - REDIRECT_URI=${REDIRECT_URI}
+      - BASE_URL=${BASE_URL}
     ports:
       - "8000:8000"
     depends_on:
