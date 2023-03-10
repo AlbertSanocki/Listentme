@@ -17,7 +17,8 @@ class AuthURL(APIView):
     def get(self, request, format=None):
         """Prepare and redirect to urlresponsible for logging in to Spotify"""
         scopes = 'user-read-playback-state user-modify-playback-state user-read-currently-playing \
-            playlist-read-private playlist-modify-private playlist-modify-public playlist-read-collaborative'
+            playlist-read-private playlist-modify-private playlist-modify-public \
+            ugc-image-upload playlist-read-collaborative'
 
         url = Request('GET', 'https://accounts.spotify.com/authorize', params={
             'scope': scopes,

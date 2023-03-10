@@ -57,7 +57,7 @@
             <div id="login-request">
                 <div class="request-info">
                     <h2>We Need Spotify!</h2>
-                    <h4>Opps! You need to login into your Spotify Account!</h4>
+                    <h4>Opps! You need to log into your Spotify Account!</h4>
                     <p>To use Listentme, you must be authenticated and give us the necessary resources.</p>
                     <a href="spotify/get-auth-url"><i class="fa-solid fa-arrow-right-to-bracket"></i>Login</a>
                 </div>
@@ -120,11 +120,13 @@
 
         <script type="text/javascript">
             var loginRequest = document.getElementById("login-request");
-            window.onmousemove = function(e){
-                var x = e.clientX/5,
-                    y = e.clientY/5;
-                loginRequest.style.backgroundPositionX = x + "px";
-                loginRequest.style.backgroundPositionY = y + "px";
+            if (loginRequest !== null){
+                window.onmousemove = function(e){
+                    var x = e.clientX/5,
+                        y = e.clientY/5;
+                    loginRequest.style.backgroundPositionX = x + "px";
+                    loginRequest.style.backgroundPositionY = y + "px";
+                }
             }
         </script>
     </body>

@@ -1,4 +1,5 @@
 """Utils for Spotify Service"""
+import base64
 import json
 import os
 from datetime import timedelta
@@ -122,9 +123,11 @@ def get_current_user(session_id):
 
 
 def create_a_playlist(session_id, form_data):
-    """Creating a playlist in authenticated Spotify user account
+    """
+    Creating a playlist in authenticated Spotify user account
     according to preferences
     """
+
     current_user = get_current_user(session_id)
     user_id = current_user.get('id')
     endpoint = f'users/{user_id}/playlists'
@@ -141,9 +144,17 @@ def create_a_playlist(session_id, form_data):
     )
     new_palylist_id = new_playlist.get('id')
     artists_form = form_data.get('artists')
+    img = form_data.get('img')
     artists_data = get_artists(session_id, artists_form)
     tracks_uris_str = get_artists_top_tracks_uris(session_id, artists_data)
+    add_custom_image_to_playlist(session_id, new_palylist_id, img)
     add_tracks_to_playlist(session_id, new_palylist_id, tracks_uris_str)
+
+def add_custom_image_to_playlist(session_id, playlist_id, img):
+    endpoint = f'playlists/{playlist_id}/images'
+    if img:
+        img_data = base64.b64encode(img.file.read())
+        execute_spotify_api_request(session_id, endpoint, request_method='PUT', data=img_data)
 
 def get_artists(session_id, artists_form):
     """Search and return an Artist from Spotify"""

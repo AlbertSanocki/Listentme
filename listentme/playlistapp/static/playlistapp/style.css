@@ -302,10 +302,16 @@ body {
     background-position: center;
 }
 
+/* ----------- */
+
+.container .wrapper a {
+    text-decoration: none;
+}
+
 .container .wrapper .name {
     color: #fff;
     font-size: 50px;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .users-playlists {
@@ -427,6 +433,12 @@ body {
     width: 300px;
 }
 
+/* ----------- */
+
+.users-playlists .swiper-slide a {
+    text-decoration: none;
+}
+
 .home-page .playlist-box {
     width: 300px;
     height: 300px;
@@ -452,7 +464,6 @@ body {
 }
 
 .home-page .playlist-name {
-    text-decoration: none;
     color: #fff;
     padding-top: 15px;
 }
@@ -480,6 +491,7 @@ body {
     width: 240px;
     height: 240px;
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
@@ -492,22 +504,45 @@ body {
 }
 
 .playlist-img:hover {
-    background-color: #fff3;
-    background-image: url("images/edit-2-64.png");
+    background-image: none;
 }
 
-.playlist-img label{
+.img-label {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: contents;
+    
+}
+
+.img-label label:hover {
+    background-color: rgba(0,0,0,0.7);
+    background-image: url("images/edit-100.png");
+}
+
+.img-label label {
     width: 240px;
     height: 240px;
-    display: flex;
-    justify-content: center;
-    padding-top: 70%;
+    border-radius: 10px;
     color: transparent;
-    font-size: 15px;
+    cursor: pointer;
+    z-index: 1000;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.playlist-img label:hover {
-    color: #1db954;
+.preview-img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.preview-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    border-radius: 10px;
 }
 
 .preferences-form {
@@ -619,7 +654,7 @@ body {
 }
 
 .new-playlist-public p {
-    color: #8e8e8e;
+    color: #fff;
     padding-right: 5px;
 }
 

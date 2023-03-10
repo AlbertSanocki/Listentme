@@ -2,17 +2,20 @@
 {% block title %}Listentme{% endblock %}
 {% block content%}
 <div class="create-page">
-    <form method="post" action="/create" class="form-group">
+    <form method="post" action="/create" enctype="multipart/form-data" class="form-group">
         {% csrf_token %}
         <div class="input-group">
             <h2>PLAY LIST</h2>
             <div class="preferences">
                 <div class="playlist-img">
-                    <label for="id_img" class="custom-file-upload">
-                        Choose photo
-                    </label>
+                    <div class="img-label">
+                        <label for="id_img" class="custom-file-upload"></label>
+                    </div>
                     <div class="hidden">
-                    {{ new_playlist_data_form.img }}
+                        {{ new_playlist_data_form.img }}
+                    </div>
+                    <div class="preview-img">
+                        <img id="output"/>
                     </div>
                 </div>
                 <div class="preferences-form">
@@ -56,7 +59,7 @@
                 {% endif %}
             </div>
             <div class="input-group-prepend">
-                <button type="submit" name="save">Create New</button>
+                <button id="submit" type="submit" name="save">Create New</button>
             </div>
         </div>
     </form>
@@ -114,5 +117,23 @@
                 forms[i].setAttribute("id", `form-${i}`);
             }
         }
+</script>
+<script>
+    var input = document.querySelector('#id_img');
+    input.addEventListener('change', preview);
+    function preview(){
+        var fileObject = this.files[0];
+        var fileReader = new FileReader();
+        if (fileObject instanceof Blob) {
+            fileReader.readAsDataURL(fileObject);
+            fileReader.onload = function(){
+                var result = fileReader.result;
+                var img = document.querySelector("#output");
+                console.log(result)
+                img.setAttribute('src', result);
+                img.style.display="flex";
+            }
+        }
+    }
 </script>
 {% endblock %}

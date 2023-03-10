@@ -20,10 +20,11 @@ def create(request):
     current_user = get_current_user(request.session.session_key)
     ArtistFormSet = formset_factory(ArtistForm, extra=0)
     if request.method == 'POST':
-        new_playlist_data_form = NewPlaylistDataForm(request.POST or None)
+        new_playlist_data_form = NewPlaylistDataForm(request.POST or None, request.FILES or None)
         artist_formset = ArtistFormSet(request.POST or None)
         if all([new_playlist_data_form.is_valid(), artist_formset.is_valid()]):
             form_data = {
+                'img': new_playlist_data_form.cleaned_data['img'],
                 'name': new_playlist_data_form.cleaned_data['name'],
                 'description': new_playlist_data_form.cleaned_data['description'],
                 'public': new_playlist_data_form.cleaned_data['public'],
