@@ -3,12 +3,8 @@ import os
 from django.shortcuts import redirect
 from rest_framework.views import APIView
 from requests import Request, post
-from rest_framework import status
-from rest_framework.response import Response
 from .util import (
-    is_spotify_authenticated,
     update_or_create_user_tokens,
-    execute_spotify_api_request,
     delete_spotify_token
 )
 
@@ -62,27 +58,3 @@ def spotify_log_out(request, format=None):
     """Logout for the user"""
     delete_spotify_token(request.session.session_key)
     return redirect('playlistapp:home')
-
-class IsAuthenticated(APIView):
-    """IsAuthenticated Rest API View for a future frontend"""
-    def get(self, request, format=None):
-        """
-        Check if Spotify user is authenticated
-        """
-        is_authenticated = is_spotify_authenticated(self.request.session.session_key)
-        return Response({'status': is_authenticated}, status=status.HTTP_200_OK)
-
-class CurrentUser(APIView):
-    """CurrentUser Rest API View for a future frontend"""
-    def get(self, request):
-        """
-        Load current user
-        """
-        endpoint = 'me/'
-        print(self.request.session.session_key)
-        is_authenticated = is_spotify_authenticated(self.request.session.session_key)
-        print(is_authenticated)
-        if is_authenticated:
-            current_user = execute_spotify_api_request(request.session.session_key, endpoint)
-            return Response({'current_user': current_user}, status=status.HTTP_200_OK)
-        return Response({'current_user': None}, status=status.HTTP_200_OK)
