@@ -9,7 +9,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('create', create, name='create'),
     path('view', view, name='view'),
-    path('spotify/get-auth-url', AuthURL.as_view()),
-    path('spotify/redirect', spotify_callback),
-    path('logout', spotify_log_out),
+    path('spotify/get-auth-url', AuthURL.as_view(), name='get_auth_url'),
+    path('spotify/redirect', spotify_callback, name='spotify_callback'),
+    path('logout', spotify_log_out, name='spotify_logout'),
 ]
