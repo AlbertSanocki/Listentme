@@ -46,6 +46,13 @@
                 </ul>
             </div>
         </div>
+        <div class="sidenavBtn">
+            <div class="wrapper-menu">
+                <div class="line-menu half start"></div>
+                <div class="line-menu"></div>
+                <div class="line-menu half end"></div>
+            </div>
+        </div>
 
         <!-- Content -->
         {% if current_user.display_name %}
@@ -129,5 +136,28 @@
                 }
             }
         </script>
+
+        <script>
+            var wrapperMenu = document.querySelector(".wrapper-menu");
+            var sidenav = document.querySelector(".sidenav");
+            wrapperMenu.addEventListener("click", function(){
+            wrapperMenu.classList.toggle("open");
+            if (sidenav.style.left == "0px"){
+                sidenav.style.left = "-230px";
+            }
+            else {
+                sidenav.style.left = "0px";
+            }
+            });
+            window.addEventListener("resize", function(){
+            if (screen.width > 1250) {
+                sidenav.style.left = "0px";
+            }
+            if (screen.width < 1250 && wrapperMenu.classList.value !== "wrapper-menu open") {
+                sidenav.style.left = "-230px";
+            }
+            });
+        </script>
+
     </body>
 </html>
